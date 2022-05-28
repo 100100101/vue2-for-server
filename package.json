@@ -1,0 +1,10 @@
+{
+  "name": "vue2-for-server",
+  "version": "1.0.0",
+  "description": "Use architecture like Vue 2 on server without any DOM dependencies",
+  "main": "index.ts",
+  "types": "index.d.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
