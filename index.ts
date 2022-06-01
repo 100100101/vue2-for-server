@@ -1,5 +1,5 @@
 import Vue from './VueForServer'
-import { useOutsidePromise } from '@/utils'
+import { useOutsidePromise } from 'use-outside-promise'
 interface asyncVueInstance {
     $createdPromise: Promise<any>
     [x: string | number | symbol]: unknown
