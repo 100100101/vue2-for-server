@@ -1,15 +1,17 @@
 import Vue from './VueForServer'
-import { useOutsidePromise } from '@/utils'
-interface asyncVueInstance {
+import { useOutsidePromise } from 'use-outside-promise'
+export interface IAsyncVueInstance {
     $createdPromise: Promise<any>
     [x: string | number | symbol]: unknown
 }
-type AsyncVue = (options: any) => asyncVueInstance
+type AsyncVue = (options: any) => IAsyncVueInstance
 export const asyncVue: AsyncVue = options => {
     const originCreated = options.created
+    const originCreatedCopy = { ...originCreated }
     const isAsyncOriginCreated =
         originCreated && originCreated.constructor.name == 'AsyncFunction'
-    options.created = function (this: any) {
+
+    originCreatedCopy.created = function (this: any) {
         if (isAsyncOriginCreated) {
             const outsidePromise = useOutsidePromise()
             this.$createdPromise = outsidePromise
@@ -25,7 +27,7 @@ export const asyncVue: AsyncVue = options => {
         return
     }
 
-    const instance: asyncVueInstance = new Vue(options)
+    const instance: IAsyncVueInstance = new Vue(originCreatedCopy)
     return instance
 }
 export { Vue }
