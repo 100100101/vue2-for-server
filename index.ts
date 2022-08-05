@@ -6,10 +6,11 @@ export interface IAsyncVueInstance {
 }
 type AsyncVue = (options: any) => IAsyncVueInstance
 export const asyncVue: AsyncVue = options => {
-    const originCreated = options.created
+    const optionsCopy = { ...options }
+    const originCreated = optionsCopy.created
     const isAsyncOriginCreated =
         originCreated && originCreated.constructor.name == 'AsyncFunction'
-    options.created = function (this: any) {
+    optionsCopy.created = function (this: any) {
         if (isAsyncOriginCreated) {
             const outsidePromise = useOutsidePromise()
             this.$createdPromise = outsidePromise
@@ -25,7 +26,7 @@ export const asyncVue: AsyncVue = options => {
         return
     }
 
-    const instance: IAsyncVueInstance = new Vue(options)
+    const instance: IAsyncVueInstance = new Vue(optionsCopy)
     return instance
 }
 export { Vue }
